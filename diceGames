@@ -1,0 +1,139 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Dec 13 21:50:54 2018
+
+@author: steveyyp
+"""
+
+## Import Libraries 
+import random 
+
+## Functions
+def diceRoll():
+    """
+    Rolls a "sided" number dice, "rolls" number of times
+    
+    Arguments
+    None
+    
+    Input
+    sides - (int) number of sides the dice will have
+    rolls - (int) number of rolls
+    
+    Output
+    userScore - (int) total value of dice rolls scored by the user
+    computerScore - (int) total value of dice rolls scored by the computer
+    """
+    # Define Base Values
+    userScore = 0
+    computerScore = 0
+    
+    #Ask User for Inputs and Check if Inputs are valid
+    sides = input("How many sided die do you want to roll? ")
+    
+    while True:
+        if sides.isnumeric() == True:
+            sides = int(sides)
+            break
+        else:
+            print("Please enter a number!")
+            sides = input("How many sided die do you want to roll? ")
+
+    
+    rolls = input("How many rolls do you want? ")
+    
+    while True:
+        if rolls.isnumeric() == True:
+            rolls = int(rolls)
+            break
+        else:
+            print("Please enter a number!")
+            rolls = input("How many rolls do you want? ")
+    
+    # Calculate User and Computer Dice Scores
+    for i in range(rolls):
+        userScore += random.randint(1, sides)
+        computerScore += random.randint(1, sides)
+        print("After roll number",i+1, "your score is", userScore, "and the computer scored", computerScore)
+
+    # Return Values
+    return userScore, computerScore  
+
+def declareWinner(userScore, computerScore, scoringType = "High"):
+    """
+    Declares Winner of dice game
+    
+    Arguments
+    userScore - (int) total value of dice rolls scored by the user
+    computerScore - (int) total value of dice rolls scored by the computer
+    
+    Inputs
+    None
+    
+    Outputs
+    winningUser - (str) winner between the user and the computer
+    """
+    # Logic for winning user when game is set to "High"
+    if scoringType == "High":
+        if userScore > computerScore:
+            winningUser = "the User"
+        if userScore < computerScore:
+            winningUser = "the Computer"
+        if userScore == computerScore:
+            winningUser = "nobody, its a draw!"
+     
+    # Logic for winning user when game is set to "Low"
+    if scoringType == "Low":
+        if userScore < computerScore:
+            winningUser = "the User"
+        if userScore > computerScore:
+            winningUser = "the Computer"
+        if userScore == computerScore:
+            winningUser = "nobody, its a draw!"
+   
+    # Return Values
+    return winningUser
+
+# Main game 
+def playDiceGame():
+    """
+    Main Game
+    
+    Arugments
+    None
+    
+    Inputs
+    playGame - (str) user response to playing game
+    
+    Output
+    winningUserStatement - (str) user who won the dice game
+    """
+    
+    # Opening greetings
+    print("Hello....\nWould you like to play a dice game?")
+    
+    # User input in response to playing dice game
+    playGame = input("Enter [Y]es or [N]o: ")
+    
+    # Game Logic and error checking
+    while True:
+        if playGame.upper() == "Y" or playGame.upper() == "YES":
+            print("Great... Let's play!\n")
+            userScore, computerScore = diceRoll()
+            print()
+            print("Your dice score is", userScore)
+            print("The computer's dice score is",computerScore)
+            winningUser = declareWinner(userScore, computerScore, "High")
+            winningUserStatement = "The winning player is " + winningUser
+            break
+        if playGame.upper() == "N" or playGame.upper() == "NO":
+            print("Goodbye!")
+            break
+        else:
+            print("Not a valid answer!")
+            playGame = input("Enter [Y]es or [N]o: ")
+    
+    # Return Values
+    return winningUserStatement
+    
